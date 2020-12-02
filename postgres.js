@@ -126,7 +126,7 @@ postgresModule.init = function (callback) {
 			require('./postgres/list')(wrappedDB, postgresModule);
 			require('./postgres/transaction')(db, dbNamespace, postgresModule);
 
-			postgresModule.async = require('../promisify')(postgresModule, ['client', 'sessionStore', 'pool']);
+			postgresModule.async = require('./promisify')(postgresModule, ['client', 'sessionStore', 'pool']);
 
 			callback();
 		});
@@ -371,14 +371,15 @@ SELECT "_key", "type"
 	});
 }
 
-postgresModule.createSessionStore = function (options, callback) {
-	var meta = require('../meta');
+postgresModule.createSessionStore = function (options, ttl, callback) {
+	//var meta = require('../meta');
 
 	function done(db) {
 		const sessionStore = require('connect-pg-simple')(session);
 		const store = new sessionStore({
 			pool: db,
-			ttl: meta.getSessionTTLSeconds(),
+			//ttl: meta.getSessionTTLSeconds(),
+			ttl : ttl,
 			pruneSessionInterval: nconf.get('isPrimary') === 'true' ? 60 : false,
 		});
 		callback(null, store);

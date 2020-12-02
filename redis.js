@@ -63,7 +63,7 @@ redisModule.init = function (callback) {
 		require('./redis/list')(redisClient, redisModule);
 		require('./redis/transaction')(redisClient, redisModule);
 
-		redisModule.async = require('../promisify')(redisModule, ['client', 'sessionStore']);
+		redisModule.async = require('./promisify')(redisModule, ['client', 'sessionStore']);
 
 		callback();
 	});
@@ -119,13 +119,14 @@ redisModule.connect = function (options, callback) {
 	return cxn;
 };
 
-redisModule.createSessionStore = function (options, callback) {
-	const meta = require('../meta');
+redisModule.createSessionStore = function (options, ttl,callback) {
+	//const meta = require('../meta');
 	const sessionStore = require('connect-redis')(session);
 	const client = redisModule.connect(options);
 	const store = new sessionStore({
 		client: client,
-		ttl: meta.getSessionTTLSeconds(),
+		//ttl: meta.getSessionTTLSeconds(),
+		ttl: ttl,
 	});
 
 	if (typeof callback === 'function') {

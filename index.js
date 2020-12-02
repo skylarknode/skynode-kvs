@@ -19,7 +19,7 @@ primaryDB.parseIntFields = function (data, intFields, requestedFields) {
 	});
 };
 
-primaryDB.initSessionStore = function (callback) {
+primaryDB.initSessionStore = function (ttl,callback) {
 	const sessionStoreConfig = nconf.get('session_store') || nconf.get('redis') || nconf.get(databaseName);
 	let sessionStoreDB = primaryDB;
 
@@ -30,7 +30,7 @@ primaryDB.initSessionStore = function (callback) {
 		sessionStoreDB = require('./redis');
 	}
 
-	sessionStoreDB.createSessionStore(sessionStoreConfig, function (err, sessionStore) {
+	sessionStoreDB.createSessionStore(sessionStoreConfig, ttl, function (err, sessionStore) {
 		if (err) {
 			return callback(err);
 		}

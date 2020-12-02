@@ -2,7 +2,7 @@
 
 module.exports.create = function (name) {
 	var LRU = require('lru-cache');
-	var pubsub = require('../pubsub');
+	var pubsub = require('./pubsub');
 
 	var cache = new LRU({
 		max: 20000,

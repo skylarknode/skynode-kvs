@@ -134,7 +134,7 @@ mongoModule.init = function (callback) {
 		require('./mongo/list')(db, mongoModule);
 		require('./mongo/transaction')(db, mongoModule);
 
-		mongoModule.async = require('../promisify')(mongoModule, ['client', 'sessionStore']);
+		mongoModule.async = require('./promisify')(mongoModule, ['client', 'sessionStore']);
 
 		callback();
 	});
@@ -151,16 +151,17 @@ mongoModule.connect = function (options, callback) {
 	mongoClient.connect(connString, connOptions, callback);
 };
 
-mongoModule.createSessionStore = function (options, callback) {
+mongoModule.createSessionStore = function (options, ttl, callback) {
 	mongoModule.connect(options, function (err, client) {
 		if (err) {
 			return callback(err);
 		}
-		const meta = require('../meta');
+		//const meta = require('../meta');
 		const sessionStore = require('connect-mongo')(session);
 		const store = new sessionStore({
 			db: client.db(),
-			ttl: meta.getSessionTTLSeconds(),
+			//ttl: meta.getSessionTTLSeconds(),
+			ttl: ttl,
 		});
 
 		callback(null, store);
