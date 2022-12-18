@@ -5,7 +5,6 @@ var async = require('async');
 var winston = require('winston');
 var nconf = require('nconf');
 var semver = require('semver');
-var session = require('express-session');
 var redis = require('redis');
 var redisClient;
 

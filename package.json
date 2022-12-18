@@ -17,22 +17,20 @@
     "url": "git://github.com/skylarknode/skynode-kvs.git"
   },
   "scripts": {},
-  "dependencies": {
-    "async": "2.6.1",
-    "express": "^4.16.2",
-    "express-session": "^1.17.1",
-    "lodash": "^4.17.20",
-    "mongodb": "3.1.13",
-    "mubsub-nbb": "^1.6.1",
-    "nconf": "^0.10.0",
-    "pg": "^7.18.2",
-    "prompt": "^1.0.0",
-    "redis": "2.8.0",
-    "semver": "^5.7.1",
-    "winston": "^2.0.0"
-  },
   "engines": {
-    "node": "7"
+    "node": ">=18"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "async": "^3.0.0",
+    "lodash": "^4.0.0",
+    "mongodb": "^4.0.0",
+    "mubsub-nbb": "^1.0.0",
+    "nconf": "^0.12.0",
+    "pg": "^8.0.0",
+    "prompt": "^1.0.0",
+    "redis": "^4.0.0",
+    "semver": "^7.0.0",
+    "winston": "^3.0.0"
+  }
 }

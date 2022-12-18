@@ -3,7 +3,6 @@
 var winston = require('winston');
 var async = require('async');
 var nconf = require('nconf');
-var session = require('express-session');
 var _ = require('lodash');
 var semver = require('semver');
 var dbNamespace = require('continuation-local-storage').createNamespace('postgres');
