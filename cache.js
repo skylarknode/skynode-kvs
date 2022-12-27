@@ -6,8 +6,11 @@ module.exports.create = function (name) {
 
 	var cache = new LRU({
 		max: 20000,
+		maxSize : 20000,
 		length: function () { return 1; },
 		maxAge: 0,
+		// how long to live in ms
+		ttl: 1000 * 60 * 5
 	});
 
 	cache.misses = 0;

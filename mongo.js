@@ -103,11 +103,13 @@ mongoModule.getConnectionString = function (mongo) {
 mongoModule.getConnectionOptions = function (mongo) {
 	mongo = mongo || nconf.get('mongo');
 	var connOptions = {
-		poolSize: 10,
-		reconnectTries: 3600,
-		reconnectInterval: 1000,
-		autoReconnect: true,
-		connectTimeoutMS: 90000,
+	//	poolSize: 10,
+	//	reconnectTries: 3600,
+	//	reconnectInterval: 1000,
+	//	autoReconnect: true,
+	//	connectTimeoutMS: 90000,
+        maxPoolSize:50,
+        wtimeoutMS:90000,
 		useNewUrlParser: true,
 	};
 
@@ -289,12 +291,12 @@ function getCollectionStats(db, callback) {
 
 mongoModule.close = function (callback) {
 	callback = callback || function () {};
-	client.close(function (err) {
-		callback(err);
-	});
+	if (client) {
+		client.close(function (err) {
+			callback(err);
+		});
+    } else {
+    	callback();
+    }
 };
 
-mongoModule.socketAdapter = function () {
-	var mongoAdapter = require('socket.io-adapter-mongo');
-	return mongoAdapter(mongoModule.getConnectionString());
-};
