@@ -87,7 +87,6 @@ redisModule.connect = function (options, callback) {
 	}
 
 	cxn.on('error', function (err) {
-
 		winston.error(err.stack);
 		if (!callbackCalled) {
 			callbackCalled = true;
@@ -96,7 +95,6 @@ redisModule.connect = function (options, callback) {
 	});
 
 	cxn.on('ready', function () {
-		console.log("redis.ready!!");
 		if (!callbackCalled) {
 			callbackCalled = true;
 			callback(null, cxn);
@@ -106,19 +104,16 @@ redisModule.connect = function (options, callback) {
 	if (options.password) {
 		cxn.auth(options.password);
 	}
-	cxn.connect().then(()=>{
-		console.log("redis.connect!!");
-		var dbIdx = parseInt(options.database, 10);
-		if (dbIdx >= 0) {
-			cxn.select(dbIdx, function (err) {
-				if (err) {
-					winston.error('SkyBB could not select Redis database. Redis returned the following error', err);
-					throw err;
-				}
-			});
-		}		
-	})
 
+	var dbIdx = parseInt(options.database, 10);
+	if (dbIdx >= 0) {
+		cxn.select(dbIdx, function (err) {
+			if (err) {
+				winston.error('SkyBB could not select Redis database. Redis returned the following error', err);
+				throw err;
+			}
+		});
+	}
 
 	return cxn;
 };
@@ -211,6 +206,17 @@ redisModule.info = function (cxn, callback) {
 	], callback);
 };
 
+redisModule.socketAdapter = function () {
+	var redisAdapter = require('socket.io-redis');
+	var pub = redisModule.connect(nconf.get('redis'));
+	var sub = redisModule.connect(nconf.get('redis'));
+	return redisAdapter({
+		key: 'db:' + nconf.get('redis:database') + ':adapter_key',
+		pubClient: pub,
+		subClient: sub,
+	});
+};
 
 redisModule.helpers = redisModule.helpers || {};
 redisModule.helpers.redis = require('./redis/helpers');
+
