@@ -55,12 +55,12 @@ redisModule.init = function (callback) {
 		}
 		redisModule.client = redisClient;
 
-		require('./redis/main')(redisClient, redisModule);
-		require('./redis/hash')(redisClient, redisModule);
-		require('./redis/sets')(redisClient, redisModule);
-		require('./redis/sorted')(redisClient, redisModule);
-		require('./redis/list')(redisClient, redisModule);
-		require('./redis/transaction')(redisClient, redisModule);
+		require('./redisdb/main')(redisClient, redisModule);
+		require('./redisdb/hash')(redisClient, redisModule);
+		require('./redisdb/sets')(redisClient, redisModule);
+		require('./redisdb/sorted')(redisClient, redisModule);
+		require('./redisdb/list')(redisClient, redisModule);
+		require('./redisdb/transaction')(redisClient, redisModule);
 
 		redisModule.async = require('./promisify')(redisModule, ['client', 'sessionStore']);
 
@@ -83,6 +83,10 @@ redisModule.connect = function (options, callback) {
 		cxn = redis.createClient(options.host, connOptions);
 	} else {
 		/* Else, connect over tcp/ip */
+		console.log("redis:");
+		console.log(redis);
+		console.log("redis:createClient");
+		console.log(redis.createClient);
 		cxn = redis.createClient(options.port, options.host, connOptions);
 	}
 
@@ -218,5 +222,5 @@ redisModule.socketAdapter = function () {
 };
 
 redisModule.helpers = redisModule.helpers || {};
-redisModule.helpers.redis = require('./redis/helpers');
+redisModule.helpers.redis = require('./redisdb/helpers');
 

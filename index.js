@@ -9,6 +9,9 @@ if (!databaseName) {
 	process.exit();
 }
 
+if (databaseName==="redis") {
+	databaseName = "redisdb"
+}
 var primaryDB = require('./' + databaseName);
 
 primaryDB.parseIntFields = function (data, intFields, requestedFields) {
@@ -27,7 +30,7 @@ primaryDB.initSessionStore = function (ttl,callback) {
 		sessionStoreDB = require('./' + sessionStoreConfig.name);
 	} else if (nconf.get('redis')) {
 		// if redis is specified, use it as session store over others
-		sessionStoreDB = require('./redis');
+		sessionStoreDB = require('./redisdb');
 	}
 
 	sessionStoreDB.createSessionStore(sessionStoreConfig, ttl, function (err, sessionStore) {
