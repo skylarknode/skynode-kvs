@@ -12,6 +12,7 @@ if (!databaseName) {
 if (databaseName==="redis") {
 	databaseName = "redisdb"
 }
+
 var primaryDB = require('./' + databaseName);
 
 primaryDB.parseIntFields = function (data, intFields, requestedFields) {
